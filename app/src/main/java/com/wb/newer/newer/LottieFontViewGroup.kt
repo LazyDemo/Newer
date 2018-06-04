@@ -1,0 +1,237 @@
+package com.wb.newer.newer
+
+import android.content.Context
+import android.text.InputType
+import android.util.AttributeSet
+import android.util.Log
+import android.view.KeyEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.BaseInputConnection
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieComposition
+import com.airbnb.lottie.LottieDrawable
+import java.util.*
+
+class LottieFontViewGroup @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
+    private val compositionMap = HashMap<String, LottieComposition>()
+    private val views = ArrayList<View>()
+    private val scale = 0.7f
+    var max = 0
+    private val cursorView: LottieAnimationView by lazy { LottieAnimationView(context) }
+
+    init {
+        isFocusableInTouchMode = true
+//        LottieComposition.Factory.fromAssetFileName(context, "Mobilo/BlinkingCursor.json"
+//        ) { composition ->
+//            if (composition == null) {
+//                return@fromAssetFileName
+//            }
+//            cursorView.layoutParams = FrameLayout.LayoutParams(
+//                    ViewGroup.LayoutParams.WRAP_CONTENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT
+//            )
+//            cursorView.setComposition(composition)
+//            cursorView.repeatCount = LottieDrawable.INFINITE
+//            cursorView.playAnimation()
+//            addView(cursorView)
+//        }
+    }
+
+    private fun addSpace() {
+        val index = indexOfChild(cursorView)
+        addView(createSpaceView(), index)
+    }
+
+    override fun addView(child: View, index: Int) {
+        super.addView(child, index)
+        if (index == -1) {
+            views.add(child)
+        } else {
+            views.add(index, child)
+        }
+    }
+
+    private fun removeLastView() {
+        if (views.size > 1) {
+            val position = views.size - 2
+            removeView(views[position])
+            views.removeAt(position)
+        }
+    }
+
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
+        if (views.isEmpty()) {
+            return
+        }
+        var currentX = paddingTop
+        var currentY = paddingLeft
+
+        for (i in views.indices) {
+            val view = views[i]
+            if (!fitsOnCurrentLine(currentX, view)) {
+                if (view.tag != null && view.tag == "Space") {
+                    continue
+                }
+                currentX = paddingLeft
+                currentY += view.measuredHeight
+            }
+            currentX += view.width
+        }
+
+        setMeasuredDimension(measuredWidth, currentY + views[views.size - 1].measuredHeight * 2)
+    }
+
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        super.onLayout(changed, l, t, r, b)
+    }
+
+    override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection {
+        val fic = BaseInputConnection(this, false)
+        outAttrs.actionLabel = null
+        outAttrs.inputType = InputType.TYPE_NULL
+        outAttrs.imeOptions = EditorInfo.IME_ACTION_NEXT
+        return fic
+    }
+
+    override fun onCheckIsTextEditor(): Boolean {
+        return true
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_SPACE) {
+            addSpace()
+            return true
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            removeLastView()
+            return true
+        }
+
+        if (!isValidKey(event)) {
+            return super.onKeyUp(keyCode, event)
+        }
+
+
+//        val letter = "" + Character.toUpperCase(event.unicodeChar.toChar())
+        // switch (letter) {
+        //     case ",":
+        //         letter = "Comma";
+        //         break;
+        //     case "'":
+        //         letter = "Apostrophe";
+        //         break;
+        //     case ";":
+        //     case ":":
+        //         letter = "Colon";
+        //         break;
+        // }
+//        val fileName = "Mobilo/$letter.json"
+//        if (compositionMap.containsKey(fileName)) {
+//            addComposition(compositionMap[fileName]!!)
+//        } else {
+//            LottieComposition.Factory.fromAssetFileName(context, fileName
+//            ) { composition ->
+//                if (composition == null) {
+//                    return@fromAssetFileName
+//                }
+//                compositionMap.put(fileName, composition)
+//                addComposition(composition)
+//            }
+//        }
+        addLetter(Character.toUpperCase(event.unicodeChar.toChar()))
+
+        return true
+    }
+
+    fun addLetter(letterSingle: Char) {
+        val letter = "" + Character.toUpperCase(letterSingle)
+
+        val fileName = "Mobilo/$letter.json"
+        if (compositionMap.containsKey(fileName)) {
+            addComposition(compositionMap[fileName]!!)
+        } else {
+            LottieComposition.Factory.fromAssetFileName(context, fileName
+            ) { composition ->
+                if (composition == null) {
+                    return@fromAssetFileName
+                }
+                compositionMap[fileName] = composition
+                addComposition(composition)
+            }
+        }
+    }
+
+    private fun isValidKey(event: KeyEvent): Boolean {
+        if (!event.hasNoModifiers()) {
+            return false
+        }
+        if (event.keyCode >= KeyEvent.KEYCODE_A && event.keyCode <= KeyEvent.KEYCODE_Z) {
+            return true
+        }
+
+        // switch (keyCode) {
+        //     case KeyEvent.KEYCODE_COMMA:
+        //     case KeyEvent.KEYCODE_APOSTROPHE:
+        //     case KeyEvent.KEYCODE_SEMICOLON:
+        //         return true;
+        // }
+        return false
+    }
+
+    var endListener: EndListener? = null
+    private fun addComposition(composition: LottieComposition) {
+        val lottieAnimationView = LottieAnimationView(context)
+        val index = indexOfChild(cursorView)
+
+        lottieAnimationView.layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        lottieAnimationView.scale = scale
+        lottieAnimationView.setComposition(composition)
+        lottieAnimationView.playAnimation()
+
+        if (views.size == max) {
+            lottieAnimationView.addAnimatorUpdateListener {
+                if (endListener != null) {
+                    if (it.animatedValue as Float == 1.0f) {
+                        endListener?.onEnd()
+                    }
+                }
+            }
+        }
+
+        addView(lottieAnimationView, index)
+    }
+
+    private fun fitsOnCurrentLine(currentX: Int, view: View): Boolean {
+        return currentX + view.measuredWidth < width - paddingRight
+    }
+
+    private fun createSpaceView(): View {
+        val spaceView = View(context)
+        spaceView.layoutParams = FrameLayout.LayoutParams(
+                resources.getDimensionPixelSize(R.dimen.font_space_width),
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        spaceView.tag = "Space"
+        return spaceView
+    }
+
+    public interface EndListener {
+        fun onEnd()
+    }
+
+}
