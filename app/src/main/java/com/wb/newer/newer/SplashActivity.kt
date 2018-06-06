@@ -32,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
                 if (temp == charArray.size - 1) {
                     lottieFontViewGroup.endListener = object : LottieFontViewGroup.EndListener {
                         override fun onEnd() {
-//                            startMain()
+                            startMain()
                         }
 
                     }
@@ -45,7 +45,8 @@ class SplashActivity : AppCompatActivity() {
         animator.start()
 
         constraintSet = ConstraintSet()
-        constraintSet.clone(this, R.layout.activity_splash_second)
+        constraintSet.clone(constraintLayout)
+        constraintSet.centerVertically(R.id.lottieFontViewGroup, 0)
 
     }
 
@@ -71,6 +72,6 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             startActivity(intent)
             finish()
-        }, 1000)
+        }, 2000)
     }
 }
