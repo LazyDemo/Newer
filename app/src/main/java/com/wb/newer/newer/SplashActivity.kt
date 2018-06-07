@@ -47,7 +47,6 @@ class SplashActivity : AppCompatActivity() {
         constraintSet = ConstraintSet()
         constraintSet.clone(constraintLayout)
         constraintSet.centerVertically(R.id.lottieFontViewGroup, 0)
-
     }
 
     override fun onResume() {
