@@ -5,12 +5,18 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.constraint.ConstraintSet
+import android.support.transition.ChangeBounds
+import android.support.transition.TransitionManager
 import android.util.Log
 import android.view.Window
+import android.view.animation.AnticipateOvershootInterpolator
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
     var temp = -1
+
+    private lateinit var constraintSet: ConstraintSet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +43,22 @@ class SplashActivity : AppCompatActivity() {
 
         }
         animator.start()
+
+        constraintSet = ConstraintSet()
+        constraintSet.clone(constraintLayout)
+        constraintSet.centerVertically(R.id.lottieFontViewGroup, 0)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Handler().postDelayed({
+            val transition = ChangeBounds()
+            transition.interpolator = AnticipateOvershootInterpolator(1.0f)
+            transition.duration = 2000
+            TransitionManager.beginDelayedTransition(constraintLayout, transition)
+            constraintSet.applyTo(constraintLayout)
+        }, 2000)
     }
     override fun onPause() {
         super.onPause()
@@ -48,6 +70,6 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             startActivity(intent)
             finish()
-        }, 1000)
+        }, 2000)
     }
 }
