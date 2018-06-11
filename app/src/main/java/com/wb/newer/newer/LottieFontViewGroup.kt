@@ -20,7 +20,7 @@ import java.util.*
 class LottieFontViewGroup @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
-    private val compositionMap = HashMap<String, LottieComposition>()
+    private val compositionMap = Hashtable<String, LottieComposition>()
     private val views = ArrayList<View>()
     private val scale = 0.7f
     var max = 0
