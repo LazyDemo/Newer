@@ -5,38 +5,30 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import com.wb.newer.newer.home.IndexFragment
-import com.wb.newer.newer.home.SecondFragment
 import com.wb.newer.newer.home.ThirdFragment
 import android.view.WindowManager
 import android.os.Build
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.app.Activity
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.View
+import com.wb.newer.newer.home.SecondFragment
 
 
-class MainActivity : AppCompatActivity(),IndexFragment.OnFragmentInteractionListener,SecondFragment.OnFragmentInteractionListener,ThirdFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), IndexFragment.OnFragmentInteractionListener, ThirdFragment.OnFragmentInteractionListener {
     override fun onIndexEvent(uri: Uri) {
-        Toast.makeText(this,"index",Toast.LENGTH_LONG).show()
-    }
-
-    override fun onSecondEvent(uri: Uri) {
-        Toast.makeText(this,"second",Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "index", Toast.LENGTH_LONG).show()
     }
 
     override fun onThirdEvent(uri: Uri) {
-        Toast.makeText(this,"third",Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "third", Toast.LENGTH_LONG).show()
     }
 
     private var mTextMessage: TextView? = null
     private var indexFragment = IndexFragment.newInstance("", "")
-    private var secondFragment = SecondFragment.newInstance("", "")
+    private var secondFragment = SecondFragment.newInstance()
     private var thirdFragment = ThirdFragment.newInstance("", "")
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -74,7 +66,7 @@ class MainActivity : AppCompatActivity(),IndexFragment.OnFragmentInteractionList
     }
 
 
-    fun setTransparentStatusBar(activity: Activity) {
+    private fun setTransparentStatusBar(activity: Activity) {
         //5.0及以上
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = window
