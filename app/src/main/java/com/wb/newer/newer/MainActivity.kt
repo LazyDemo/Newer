@@ -62,6 +62,12 @@ class MainActivity : AppCompatActivity(), IndexFragment.OnFragmentInteractionLis
 
     private fun showFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                        R.animator.card_flip_right_in,
+                        R.animator.card_flip_right_out,
+                        R.animator.card_flip_left_in,
+                        R.animator.card_flip_left_out
+                )
                 .replace(R.id.content, fragment)
                 .commit()
     }
