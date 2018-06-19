@@ -1,5 +1,7 @@
 package com.wb.newer.newer
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -11,6 +13,7 @@ import android.support.transition.TransitionManager
 import android.util.Log
 import android.view.Window
 import android.view.animation.AnticipateOvershootInterpolator
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
@@ -23,6 +26,15 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         val charArray = "newer".toCharArray()
         lottieFontViewGroup.max = charArray.size - 1
+//        lottieFontViewGroup.alpha = 0f
+//        lottieFontViewGroup.animate()
+//                .alpha(1f)
+//                .setDuration(3000)
+//                .setListener(object :AnimatorListenerAdapter(){
+//                    override fun onAnimationEnd(animation: Animator?) {
+//                        Log.d("anim","test")
+//                    }
+//                })
 
         val animator = ValueAnimator.ofInt(temp, charArray.size - 1)
         animator.duration = 800
