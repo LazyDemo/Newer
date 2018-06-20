@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Created by wb on 2018/6/13.
  * Description:
  */
-object httpUtils {
+object HttpUtils {
 
     val okHttpClient by lazy { OkHttpClient.Builder().build() }
     val gson by lazy {
