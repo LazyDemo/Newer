@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.wb.newer.newer.R
+import kotlinx.android.synthetic.main.fragment_index.*
 
 /**
  * A simple [Fragment] subclass.
@@ -18,6 +19,8 @@ import com.wb.newer.newer.R
  * Use the [IndexFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+import kotlinx.android.synthetic.main.fragment_index.view.*
+
 class IndexFragment : Fragment() {
 
     // TODO: Rename and change types of parameters
@@ -38,6 +41,11 @@ class IndexFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_index, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
