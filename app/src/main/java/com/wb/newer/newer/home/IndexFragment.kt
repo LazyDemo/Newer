@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.wb.newer.newer.GlideApp
 
 import com.wb.newer.newer.R
 import kotlinx.android.synthetic.main.fragment_index.*
@@ -45,7 +46,12 @@ class IndexFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        GlideApp.with(this)
+                .asGif()
+                .load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529490791438&di=6fb2b53a9d80e12f2addf417feed1692&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F012f64577dff9f0000018c1b7de35d.gif")
+                .placeholder(R.drawable.ic_launcher_background)
+                .fitCenter()
+                .into(centerImg)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
