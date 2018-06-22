@@ -1,5 +1,7 @@
 package com.wb.newer.newer.home
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +13,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.wb.newer.newer.GlideApp
 
 import com.wb.newer.newer.R
+import com.youth.banner.BannerConfig
 import kotlinx.android.synthetic.main.fragment_index.*
 
 /**
@@ -45,17 +48,28 @@ class IndexFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_index, container, false)
     }
 
+    private lateinit var viewModel: IndexViewModel
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        GlideApp.with(this)
-//                .asGif()
-                .load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529492697746&di=ef91ae0d209748f4296a40c3dc150582&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fd%2F570f4a85c88e6.jpg")
-//                .load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529490791438&di=6fb2b53a9d80e12f2addf417feed1692&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F012f64577dff9f0000018c1b7de35d.gif")
-//                .placeholder(R.mipmap.ic_launcher)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .fitCenter()
-                .into(centerImg)
+
+        viewModel = ViewModelProviders.of(this).get(IndexViewModel::class.java)
+        viewModel.getBanner()
+        viewModel.banner.observe(this, Observer {
+            // Set the text exposed by the LiveData
+            banner.setImageLoader(GlideImageLoader())
+            //设置图片集合
+            banner.setImages(it)
+            //banner设置方法全部调用完毕时最后调用
+            banner.start()
+        })
     }
+
+    override fun onStop() {
+        super.onStop()
+        banner.stopAutoPlay()
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {

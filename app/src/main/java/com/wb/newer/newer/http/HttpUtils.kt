@@ -16,13 +16,13 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 object HttpUtils {
 
-    val okHttpClient by lazy { OkHttpClient.Builder().build() }
-    val gson by lazy {
-        GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+    private val okHttpClient by lazy { OkHttpClient.Builder().build() }
+    private val gson by lazy {
+        GsonBuilder()
                 .create()
     }
 
-    val retrofit by lazy {
+    val retrofit: Retrofit by lazy {
         Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(BuildConfig.baseUrl)

@@ -1,5 +1,6 @@
 package com.wb.newer.newer.home
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
+import android.widget.TextView
 
 import com.wb.newer.newer.R
 import kotlinx.android.synthetic.main.second_fragment.*
@@ -30,7 +32,9 @@ class SecondFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SecondViewModel::class.java)
         // TODO: Use the ViewModel
-
+        viewModel.data.observe(this, Observer {
+            // Set the text exposed by the LiveData
+        })
     }
 
 }

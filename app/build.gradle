@@ -25,14 +25,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "baseUrl", '"http://toutiao-ali.juheapi.com/toutiao/index"'
+            buildConfigField "String", "baseUrl", '"http://www.wanandroid.com/"'
 
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "baseUrl", '"http://toutiao-ali.juheapi.com/toutiao/index"'
+            buildConfigField "String", "baseUrl", '"http://www.wanandroid.com/"'
 
         }
 
@@ -63,6 +63,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.youth.banner:banner:1.4.10'
 
 //    ijkplayer
     implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
