@@ -64,7 +64,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.youth.banner:banner:1.4.10'
-
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
 //    ijkplayer
     implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
     implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
