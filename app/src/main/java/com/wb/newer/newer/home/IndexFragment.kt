@@ -14,6 +14,7 @@ import com.wb.newer.newer.GlideApp
 
 import com.wb.newer.newer.R
 import com.youth.banner.BannerConfig
+import kotlinx.android.synthetic.main.content_layout.*
 import kotlinx.android.synthetic.main.fragment_index.*
 
 /**
@@ -63,6 +64,7 @@ class IndexFragment : Fragment() {
             //banner设置方法全部调用完毕时最后调用
             banner.start()
         })
+
     }
 
     override fun onStop() {
