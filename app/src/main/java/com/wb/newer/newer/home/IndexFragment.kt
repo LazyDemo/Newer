@@ -1,11 +1,13 @@
 package com.wb.newer.newer.home
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.wb.newer.newer.GlideApp
 
 import com.wb.newer.newer.R
+import com.wb.newer.newer.model.data.HomeResponse
+import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
 import kotlinx.android.synthetic.main.content_layout.*
 import kotlinx.android.synthetic.main.fragment_index.*
@@ -50,26 +54,57 @@ class IndexFragment : Fragment() {
     }
 
     private lateinit var viewModel: IndexViewModel
+    private var adapter: HomeAdapter? = null
 
+    private var banner: Banner? = null
+
+    @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel = ViewModelProviders.of(this).get(IndexViewModel::class.java)
-        viewModel.getBanner()
+
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        adapter = HomeAdapter(R.layout.item_home_list_layout, viewModel.pagerList)
+
+        val header = LayoutInflater.from(activity).inflate(R.layout.home_header_layout, null)
+        banner = header.findViewById(com.wb.newer.newer.R.id.banner)
+        adapter?.addHeaderView(header)
+
+        recyclerView.adapter = adapter
+        refreshLayout.setOnLoadMoreListener {
+            viewModel.getPaper()
+            adapter?.notifyDataSetChanged()
+            refreshLayout.finishLoadMore(true)
+
+        }
+        refreshLayout.setOnRefreshListener {
+            viewModel.getBanner()
+            viewModel.resetPage()
+            viewModel.getPaper()
+        }
+        refreshLayout.autoRefresh()
         viewModel.banner.observe(this, Observer {
+
             // Set the text exposed by the LiveData
-            banner.setImageLoader(GlideImageLoader())
+            banner?.setImageLoader(GlideImageLoader())
             //设置图片集合
-            banner.setImages(it)
+            banner?.setImages(it)
             //banner设置方法全部调用完毕时最后调用
-            banner.start()
+            banner?.start()
+        })
+
+        viewModel.paper.observe(this, Observer {
+            if (it != null) {
+                adapter?.notifyDataSetChanged()
+                refreshLayout.finishRefresh(true)
+            }
         })
 
     }
 
     override fun onStop() {
         super.onStop()
-        banner.stopAutoPlay()
+        banner?.stopAutoPlay()
     }
 
 
