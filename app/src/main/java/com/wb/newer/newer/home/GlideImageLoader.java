@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.wb.newer.newer.model.data.BannerResponse;
 import com.youth.banner.loader.ImageLoader;
 
@@ -26,7 +27,10 @@ public class GlideImageLoader extends ImageLoader {
          */
 
         //Glide 加载图片简单用法
-        Glide.with(context).load(((BannerResponse)path).getImagePath()).into(imageView);
+        Glide.with(context).load(((BannerResponse) path)
+                .getImagePath())
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageView);
 
 
     }

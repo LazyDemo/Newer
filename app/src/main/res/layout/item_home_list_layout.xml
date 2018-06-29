@@ -43,7 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="android 相关" />
+            android:text="android 相关"
+            android:textColor="@color/prominent_color" />
 
         <TextView
             android:id="@+id/date"

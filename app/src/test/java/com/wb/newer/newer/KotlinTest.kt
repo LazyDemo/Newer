@@ -1,6 +1,5 @@
 package com.wb.newer.newer
 
-import android.os.Handler
 import org.junit.Test
 
 /**
@@ -84,7 +83,7 @@ class KotlinTest {
     @Test
     fun testDeconstruction() {
         val person = Person()
-        val lisenter = object : testSealedLisenter{
+        val lisenter = object : TestSealedLisenter{
             override fun doListener(result: NetworkResult) {
                 when(result){
                     is Success->{}
@@ -95,11 +94,21 @@ class KotlinTest {
         val preference:String by lazy {
             ""
         }
+        SingleInstance.doThing()
     }
 
-    interface testSealedLisenter{
+    interface TestSealedLisenter{
         fun doListener(result: NetworkResult)
     }
 
+
+    object SingleInstance{
+        init {
+
+        }
+        fun doThing(){
+
+        }
+    }
 
 }

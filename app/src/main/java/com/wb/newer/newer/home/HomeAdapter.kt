@@ -1,6 +1,11 @@
 package com.wb.newer.newer.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.wb.newer.newer.R
@@ -21,11 +26,15 @@ class HomeAdapter(layoutResId: Int, data: List<HomeResponse.DatasBean>?) : BaseQ
     override fun convert(helper: BaseViewHolder, item: HomeResponse.DatasBean) {
         val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-        helper.setText(R.id.author, item.author)
+        val authorString = SpannableString("作者:" + item.author)
+        authorString.setSpan(ForegroundColorSpan(Color.parseColor("#38B1F4")), authorString.indexOf(item.author), authorString.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+
+        helper.setText(R.id.author, authorString)
                 .setText(R.id.title, item.title)
                 .setText(R.id.chapter, item.chapterName)
                 .setText(R.id.date, date.format(item.publishTime))
 
 
     }
+
 }
