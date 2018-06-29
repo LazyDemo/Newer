@@ -12,6 +12,7 @@ import com.wb.newer.newer.home.ThirdFragment
 import android.view.WindowManager
 import android.os.Build
 import android.app.Activity
+import android.app.ActivityManager
 import android.graphics.Color
 import android.view.View
 import com.wb.newer.newer.home.SecondFragment
@@ -88,5 +89,6 @@ class MainActivity : AppCompatActivity(), IndexFragment.OnFragmentInteractionLis
             val localLayoutParams = activity.window.attributes
             localLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or localLayoutParams.flags
         }
+
     }
 }
