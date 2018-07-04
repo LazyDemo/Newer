@@ -42,7 +42,11 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".VideoActivity" />
-        <activity android:name=".WebActivity"></activity>
+        <activity android:name=".WebActivity"
+            android:process=":remote"
+            >
+
+        </activity>
     </application>
 
 </manifest>

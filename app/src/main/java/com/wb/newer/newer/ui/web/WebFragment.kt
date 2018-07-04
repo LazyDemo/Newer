@@ -5,16 +5,15 @@ import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.wb.newer.newer.R
 import kotlinx.android.synthetic.main.web_fragment.*
+
 
 class WebFragment : Fragment() {
     private lateinit var url: String
@@ -37,22 +36,25 @@ class WebFragment : Fragment() {
         initWebView()
     }
 
-    private lateinit var webView:WebView
+    private var webView: WebView? = null
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        webView = WebView(activity)
+        val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT)
+        webView = WebView(activity?.application)
+        webView?.layoutParams = layoutParams
+
         web.addView(webView)
 
-        val settings = webView.settings
-        settings.javaScriptEnabled = true
-        settings.useWideViewPort = true
-        settings.loadWithOverviewMode = true
+        val settings = webView?.settings
+        settings?.javaScriptEnabled = true
+        settings?.useWideViewPort = true
+        settings?.loadWithOverviewMode = true
 
-        settings.setSupportZoom(false)
-        settings.builtInZoomControls = false
-        settings.displayZoomControls = false
+        settings?.setSupportZoom(false)
+        settings?.builtInZoomControls = false
+        settings?.displayZoomControls = false
 
-        webView.webViewClient = object :WebViewClient(){
+        webView?.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
             }
@@ -84,7 +86,7 @@ class WebFragment : Fragment() {
 //        settings.databaseEnabled = true   //开启 database storage API 功能
 //        settings.setAppCacheEnabled(true)//开启 Application Caches 功能
 
-        webView.loadUrl(url)
+        webView?.loadUrl(url)
 
     }
 
@@ -94,29 +96,42 @@ class WebFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        webView.onResume()
+        webView?.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        webView.onPause()
+        webView?.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (web!=null){
-            web.removeView(webView)
-            webView.destroy()
+        if (webView != null) {
+            // 如果先调用destroy()方法，则会命中if (isDestroyed()) return;这一行代码，需要先onDetachedFromWindow()，再
+            // destory()
+            val parent = webView?.parent as ViewGroup
+            parent.removeView(webView)
+
+            webView?.stopLoading();
+            // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
+            webView?.settings?.javaScriptEnabled = false
+            webView?.clearHistory()
+            webView?.clearView()
+            webView?.removeAllViews()
+            try {
+                webView?.destroy()
+            } catch (ex: Throwable) {
+            }
         }
 
     }
 
     fun webGoBack() {
-        webView.goBack()
+        webView?.goBack()
     }
 
-    fun canGoBack(): Boolean {
-        return webView.canGoBack()
+    fun canGoBack(): Boolean? {
+        return webView?.canGoBack()
     }
 
 

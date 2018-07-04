@@ -20,11 +20,11 @@ class WebActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webFragment.canGoBack()) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && webFragment.canGoBack()!!) {
             webFragment.webGoBack()
             return true
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyDown(keyCode, event)
     }
 
 }
