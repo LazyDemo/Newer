@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.wb.newer.newer.GlideApp
 
 import com.wb.newer.newer.R
+import com.wb.newer.newer.WebActivity
+import com.wb.newer.newer.base.IntentKey
 import com.wb.newer.newer.model.data.HomeResponse
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
@@ -68,8 +72,21 @@ class IndexFragment : Fragment() {
 
         val header = LayoutInflater.from(activity).inflate(R.layout.home_header_layout, null)
         banner = header.findViewById(com.wb.newer.newer.R.id.banner)
+        banner?.setOnBannerListener {
+            if (!TextUtils.isEmpty(viewModel.banner.value!![it].url)) {
+                val intent = Intent(activity, WebActivity::class.java)
+                intent.putExtra(IntentKey.web_url, viewModel.banner.value!![it].url)
+                startActivity(intent)
+            }
+        }
         adapter?.addHeaderView(header)
-
+        adapter?.setOnItemClickListener { _, _, position ->
+            if (!TextUtils.isEmpty(viewModel.pagerList[position].link)) {
+                val intent = Intent(activity, WebActivity::class.java)
+                intent.putExtra(IntentKey.web_url, viewModel.pagerList[position].link)
+                startActivity(intent)
+            }
+        }
         recyclerView.adapter = adapter
         refreshLayout.setOnLoadMoreListener {
             viewModel.getPaper()
