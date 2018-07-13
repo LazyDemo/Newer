@@ -41,10 +41,17 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".VideoActivity" />
-        <activity android:name=".WebActivity"
-            android:process=":remote"
-            >
+        <activity android:name=".VideoActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".WebActivity"
+            android:process=":remote">
 
         </activity>
     </application>

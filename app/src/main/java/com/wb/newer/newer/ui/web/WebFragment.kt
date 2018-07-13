@@ -57,10 +57,12 @@ class WebFragment : Fragment() {
         webView?.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
+
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+
             }
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {

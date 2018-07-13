@@ -5,5 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".VideoActivity">
+    <com.wb.newer.newer.widget.media.IjkVideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
 
+    </com.wb.newer.newer.widget.media.IjkVideoView>
 </android.support.constraint.ConstraintLayout>
