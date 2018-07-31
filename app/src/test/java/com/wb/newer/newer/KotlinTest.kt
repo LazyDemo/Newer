@@ -1,5 +1,9 @@
 package com.wb.newer.newer
 
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.style.StyleSpan
+import androidx.core.text.toSpannable
 import org.junit.Test
 
 /**
@@ -15,6 +19,8 @@ class KotlinTest {
         val name: String = person.name ?: "unknown"
         person.name ?: return
         System.out.println(name)
+        "test".toSpannable() += StyleSpan(Typeface.BOLD)
+
     }
 
     data class Person(val name: String? = "default", val age: Int = 5) {
@@ -83,32 +89,48 @@ class KotlinTest {
     @Test
     fun testDeconstruction() {
         val person = Person()
-        val lisenter = object : TestSealedLisenter{
+        val lisenter = object : TestSealedLisenter {
             override fun doListener(result: NetworkResult) {
-                when(result){
-                    is Success->{}
+                when (result) {
+                    is Success -> {
+                    }
                 }
             }
 
         }
-        val preference:String by lazy {
+        val preference: String by lazy {
             ""
         }
         SingleInstance.doThing()
+
+        onlyIf(true) {}
     }
 
-    interface TestSealedLisenter{
+    interface TestSealedLisenter {
         fun doListener(result: NetworkResult)
     }
 
 
-    object SingleInstance{
+    object SingleInstance {
         init {
 
         }
-        fun doThing(){
 
+        fun doThing() {
+        }
+
+    }
+
+    private inline fun onlyIf(check: Boolean, operation: () -> Unit) {
+        if (check) {
+            operation()
         }
     }
+
+    operator fun Spannable.plusAssign(span: Any) = setSpan(span, 0, length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+
+
+
+
 
 }
